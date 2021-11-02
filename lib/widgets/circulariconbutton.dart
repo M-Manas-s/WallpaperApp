@@ -5,15 +5,16 @@ class CircularIconButton extends StatelessWidget {
   Function()? onpressed;
   String iconname;
   IconData icon;
+  Color color;
 
-  CircularIconButton({this.onpressed,required this.iconname,required this.icon});
+  CircularIconButton({this.onpressed,required this.iconname,required this.icon,required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CircleAvatar(
-          backgroundColor: Colors.purple,
+          backgroundColor: color,
           radius: 25.0,
           child: IconButton(
             onPressed: onpressed,
