@@ -1,6 +1,6 @@
 # wallpaperapp
 
-A new Flutter project.
+A new Flutter Wallpaper App.
 
 ## Getting Started
 
