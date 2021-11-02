@@ -57,12 +57,21 @@ class _ExplorePageState extends State<ExplorePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircularIconButton(onpressed: (){},iconname: 'Top',icon: Icons.mood,),
-                  CircularIconButton(onpressed: (){},iconname: 'Collections',icon: Icons.collections_bookmark_outlined,),
-                  CircularIconButton(onpressed: (){},iconname: 'Nature',icon: Icons.filter_vintage_outlined,),
-                ]
+                  CircularIconButton(onpressed: (){},iconname: 'Top',icon: Icons.mood,color: Colors.purple,),
+                  CircularIconButton(onpressed: (){},iconname: 'Collections',icon: Icons.collections_bookmark_outlined,color: Colors.green,),
+                  CircularIconButton(onpressed: (){},iconname: 'Nature',icon: Icons.filter_vintage_outlined,color: Colors.red,),
+                ],
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ListTile(
+                title: Text('Best out of all',style: TextStyle(fontSize: 18.0,color: Colors.white),),
+                subtitle: Text('Special ones for you',style: TextStyle(color: Colors.white),),
+                trailing: Icon(Icons.chevron_right,color: Colors.white,),
+              ),
+            ),
+            
           ],
         ),
       ),
