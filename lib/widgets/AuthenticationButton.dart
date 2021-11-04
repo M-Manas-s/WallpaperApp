@@ -4,14 +4,13 @@ class AuthenticationButton extends StatelessWidget {
 
   final String label;
   final Color color;
-  final Function OnPressed;
+  final Function onPressed;
   final double height;
 
-  const AuthenticationButton({Key? key, required this.label, required this.color, required this.OnPressed, required this.height}) : super(key: key);
+  const AuthenticationButton({Key? key, required this.label, required this.color, required this.onPressed, required this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return ElevatedButton(
         style:
         ButtonStyle(
@@ -22,7 +21,7 @@ class AuthenticationButton extends StatelessWidget {
           ),
           backgroundColor: MaterialStateProperty.all<Color>(color),
         ),
-        onPressed: OnPressed(),
+        onPressed: () { onPressed(); },
         child: Container(
           height: height,
           child: Center(
