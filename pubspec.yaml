@@ -32,6 +32,11 @@ dependencies:
   lottie: ^1.2.1
   just_audio: ^0.9.15
   animated_text_kit: ^4.2.1
+  firebase_core: ^1.7.0
+  cloud_firestore: ^2.5.4
+  firebase_auth: ^3.1.4
+  shared_preferences: 2.0.0
+  flash: ^2.0.3
 
 dev_dependencies:
   flutter_test:

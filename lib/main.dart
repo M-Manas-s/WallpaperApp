@@ -1,12 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:wallpaperapp/screens/LoadingScreen.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallpaperapp/constants/LocalUser.dart';
+import 'package:wallpaperapp/screens/IntroPage.dart';
+import 'package:wallpaperapp/screens/LoadingPage.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,6 +41,15 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin{
   double z = 0;
   double y = 0;
   String label = "Pour";
+  late String email;
+
+  loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //prefs.remove('email'); // Uncommend this to always reach Auth Page
+    email = prefs.getString('email')??"";
+    if ( email!="" )
+        LocalUser.email = email;
+  }
 
   void startAnim() async {
     const int start = 700;
@@ -69,13 +87,14 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin{
     });
 
     Future.delayed(const Duration(milliseconds: start + 3200), () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => LoadingScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => (email==""?IntroPage():LoadingPage())));
     });
 
   }
 
   @override
   void initState() {
+    loadPrefs();
     super.initState();
     startAnim();
   }

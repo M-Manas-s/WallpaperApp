@@ -1,10 +1,4 @@
 
-String? fnameValidator(value) {
-  if (value.isEmpty) {
-    return "Please Enter Text";
-  }
-}
-
 String? usernameValidator(value) {
   if (value.isEmpty) {
     return "Please Enter Text";

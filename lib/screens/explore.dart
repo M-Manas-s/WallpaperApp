@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:wallpaperapp/constants/LocalUser.dart';
 import 'package:wallpaperapp/widgets/circulariconbutton.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -29,6 +30,12 @@ class _ExplorePageState extends State<ExplorePage> {
     'images/img3.jpg',
     'images/img4.jpg',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    print(LocalUser.id);
+  }
 
   @override
   Widget build(BuildContext context) {

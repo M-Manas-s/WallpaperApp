@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "146837053740",
+    "project_id": "wallpaperapp-d9953",
+    "storage_bucket": "wallpaperapp-d9953.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146837053740:android:d2a46369e0f64909310c89",
+        "android_client_info": {
+          "package_name": "com.example.wallpaperapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146837053740-54lnefofr3cqr26n50srvqlkbd55pue6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wallpaperapp",
+            "certificate_hash": "93e56036f58d3bf408739164276d0e7eafd1a639"
+          }
+        },
+        {
+          "client_id": "146837053740-pi8ds3om92g8ujfcegsdb0ffmoc1euoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBRw0U8Y7NTEbY8U9giCkw8mNZw4SRuwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146837053740-pi8ds3om92g8ujfcegsdb0ffmoc1euoh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

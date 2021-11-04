@@ -1,17 +1,19 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
+import 'package:wallpaperapp/constants/LocalUser.dart';
 import 'package:wallpaperapp/screens/explore.dart';
 
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
+class LoadingPage extends StatefulWidget {
+  const LoadingPage({Key? key}) : super(key: key);
 
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  _LoadingPageState createState() => _LoadingPageState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingPageState extends State<LoadingPage> {
   late AudioPlayer player;
   List<String> elements = [
     "Colors",
@@ -23,7 +25,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     "Parrot",
     "Paints",
     "Nature",
-    "Ocean"
+    "Oceans"
   ];
 
   startPlayer() async {
@@ -32,10 +34,24 @@ class _LoadingScreenState extends State<LoadingScreen> {
     player.play();
   }
 
+  initializeUser() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .where('Email', isEqualTo: LocalUser.email)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        LocalUser.id = element.id;
+      });
+    });
+    print("Email ${LocalUser.email} has id ${LocalUser.id}");
+  }
+
   @override
   void initState() {
     super.initState();
     player = AudioPlayer();
+    initializeUser();
     startPlayer();
     _fetchImagesAPI();
   }
@@ -71,13 +87,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Expanded(
-                        child: Text(
-                          'Loading ',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              fontSize: 35.0,
-                              color: Colors.white,
-                              fontFamily: 'Horizon'),
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Text(
+                            'Loading',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                                fontSize: 35.0,
+                                color: Colors.white,
+                                fontFamily: 'Horizon'),
+                          ),
                         ),
                       ),
                       Expanded(

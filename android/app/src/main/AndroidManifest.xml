@@ -2,6 +2,7 @@
     package="com.example.wallpaperapp">
    <application
         android:label="wallpaperapp"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
