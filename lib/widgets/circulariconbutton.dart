@@ -4,7 +4,7 @@ import 'package:wallpaperapp/constants/constants.dart';
 class CircularIconButton extends StatelessWidget {
   Function()? onpressed;
   String iconname;
-  IconData icon;
+  Icon icon;
   Color color;
 
   CircularIconButton({this.onpressed,required this.iconname,required this.icon,required this.color});
@@ -18,7 +18,7 @@ class CircularIconButton extends StatelessWidget {
           radius: 25.0,
           child: IconButton(
             onPressed: onpressed,
-            icon: Icon(icon,color: Colors.white,)
+            icon: icon
           ),
         ),
         Text('$iconname',style: kIconButtonText,)
