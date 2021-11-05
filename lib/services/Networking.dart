@@ -9,10 +9,11 @@ class NetworkHelper{
     var response= await http.get(Uri.parse(url));
 
     if (response.statusCode==200){
-      List decodeddata= json.decode(response.body);
+      var decodeddata= json.decode(response.body);
       return decodeddata;
     }else{
       print(response.statusCode);
+      return Null;
     }
   }
 
