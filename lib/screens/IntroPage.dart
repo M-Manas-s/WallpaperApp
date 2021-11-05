@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:wallpaperapp/main.dart';
 import 'package:wallpaperapp/screens/Register.dart';
 import 'package:wallpaperapp/widgets/AuthenticationButton.dart';
+
 
 import 'SignIn.dart';
 
@@ -25,32 +27,39 @@ class _IntroPageState extends State<IntroPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(children: [
-                  Lottie.asset("anim/complexphone.json", width: size.width),
-                  SizedBox(
-                    height: size.height * 0.04,
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal : size.width*0.02),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                      Lottie.asset("anim/complexphone.json",width: size.height*0.5),
+                          SizedBox(
+                            height: size.height * 0.04,
+                          ),
+                          Text(
+                            "Discover amazing wallpapers.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: MediaQuery.of(context).textScaleFactor*30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                            child: Text(
+                                "Decorate your device with beautiful wallpapers. Get access to thousands of trending wallpapers from the Unsplash community.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: MediaQuery.of(context).textScaleFactor*15, color: Colors.grey)),
+                          )
+                    ]),
                   ),
-                  Text(
-                    "Discover amazing wallpapers.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 35,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                    child: Text(
-                        "Decorate your device with beautiful wallpapers. Get access to thousands of trending wallpapers from the Unsplash community.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: Colors.grey)),
-                  )
-                ]),
+                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.07,vertical: size.width * 0.07),
+                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                   child: Container(
                     decoration: BoxDecoration(
                       color : Color(0xff3B3941),

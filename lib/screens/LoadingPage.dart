@@ -62,73 +62,67 @@ class _LoadingPageState extends State<LoadingPage> {
     player.dispose();
   }
 
-   Future<dynamic> _fetchImagesAPI() {
-      return Future.delayed(Duration(
-        milliseconds: 6000
-      ), () {
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute( builder : (context)=>ExplorePage()), (route) => false);
-      });
-   }
+  Future<dynamic> _fetchImagesAPI() {
+    return Future.delayed(Duration(milliseconds: 6000), () {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute( builder : (context)=>ExplorePage()), (route) => false);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
-          child: Stack(
-            children: [
-              Center(
-                child: Container(
-                  margin: EdgeInsets.all(size.width * 0.12),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 4.0),
-                          child: Text(
-                            'Loading',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontSize: 35.0,
-                                color: Colors.white,
-                                fontFamily: 'Horizon'),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: DefaultTextStyle(
-                          textAlign: TextAlign.left,
+            child: Stack(
+          children: [
+            Center(
+              child: Container(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: size.width * 0.05),
+                        child: Text(
+                          'Loading',
+                          textAlign: TextAlign.right,
                           style: TextStyle(
-                            fontSize: 35.0,
-                            fontFamily: 'Horizon',
-                          ),
-                          child: AnimatedTextKit(
-                            repeatForever: true,
-                            pause: Duration(milliseconds: 0),
-                            animatedTexts: elements
-                                .map((e) =>
-                                RotateAnimatedText(e,
-                                    duration:
-                                    Duration(milliseconds: 700)))
-                                .toList(),
-                          ),
+                              fontSize: MediaQuery.of(context).textScaleFactor*30,
+                              color: Colors.white,
+                              fontFamily: 'Horizon'),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      child: DefaultTextStyle(
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).textScaleFactor*30,
+                          fontFamily: 'Horizon',
+                        ),
+                        child: Row(
+                          children: [
+                            AnimatedTextKit(
+                              repeatForever: true,
+                              pause: Duration(milliseconds: 0),
+                              animatedTexts: elements
+                                  .map((e) => RotateAnimatedText(e,
+                                      duration: Duration(milliseconds: 700)))
+                                  .toList(),
+                            ),
+                            Expanded(child: Container(),)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Container(
-                  height: size.height * 0.5,
-                  margin: EdgeInsets.only(top: size.height * 0.5),
-                  //color: Colors.red,
-                  child: Lottie.asset("anim/musicwave.json"))
-            ],
-          )
-        ));
+            ),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Lottie.asset("anim/musicwave.json", width: size.width))
+          ],
+        )));
   }
 }
