@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wallpaperapp/screens/itempage.dart';
 
 class WallpaperGridBuilder extends StatelessWidget {
@@ -7,7 +10,7 @@ class WallpaperGridBuilder extends StatelessWidget {
     required this.gridimagelist,
   }) : super(key: key);
 
-  final List<Image> gridimagelist;
+  final List<dynamic> gridimagelist;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class WallpaperGridBuilder extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.symmetric(horizontal: 18.0),
-            itemCount: 9,
+            itemCount: 12,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 18.0,
@@ -36,7 +39,16 @@ class WallpaperGridBuilder extends StatelessWidget {
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  child: gridimagelist[index],
+                  child: CachedNetworkImage(
+                    imageUrl: gridimagelist[index]['regular'],
+                    fit: BoxFit.fitHeight,
+                    placeholder: (_, __) {
+                      return AspectRatio(
+                        aspectRatio: 1.6,
+                        child: BlurHash(hash: gridimagelist[index]['blur'],),
+                      );
+                    },
+                  ),
                 ),
               );
             },

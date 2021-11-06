@@ -4,6 +4,7 @@ import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
 
 class SearchPage extends StatefulWidget {
   final String searchItem;
+
   SearchPage({required this.searchItem});
 
   @override
@@ -12,12 +13,11 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   var decodeddata;
-  List<Image> imageList = [];
+  List<String> imageList = [];
 
   Future<dynamic> getCollectionData(String typeOfCollection) async {
-    NetworkHelper networkHelper = NetworkHelper(
+    var imagedata = await NetworkHelper().getWallpaper(
         'https://api.unsplash.com/search/photos?query=$typeOfCollection&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI');
-    var imagedata = await networkHelper.getWallpaper();
     setState(() {
       decodeddata = imagedata;
     });
@@ -28,10 +28,7 @@ class _SearchPageState extends State<SearchPage> {
     for (int i = 0; i < 9; i++) {
       setState(() {
         imageList.add(
-          Image.network(
-            decodeddata['results'][i]['urls']['regular'],
-            fit: BoxFit.cover,
-          ),
+          decodeddata['results'][i]['urls']['regular'],
         );
       });
     }

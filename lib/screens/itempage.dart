@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ItemPage extends StatefulWidget {
-  Image Wallpaper;
+  dynamic Wallpaper;
   ItemPage({required this.Wallpaper});
 
   @override
@@ -21,7 +24,16 @@ class _ItemPageState extends State<ItemPage> {
             child: Container(
               width: MediaQuery.of(context).size.width + 200,
               height: MediaQuery.of(context).size.height,
-              child: widget.Wallpaper
+              child: CachedNetworkImage(
+                imageUrl: widget.Wallpaper['full'],
+                fit: BoxFit.fitHeight,
+                placeholder: (_, __) {
+                  return AspectRatio(
+                    aspectRatio: 1.6,
+                    child: BlurHash(hash: widget.Wallpaper['blur'],),
+                  );
+                },
+              )
             ),
           ),
           Positioned(
