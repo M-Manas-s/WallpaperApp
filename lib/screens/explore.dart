@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:wallpaperapp/constants/LocalUser.dart';
 import 'package:wallpaperapp/widgets/circulariconbutton.dart';
-import 'itempage.dart';
+import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
 import 'package:wallpaperapp/services/Networking.dart';
+import 'SearchPage.dart';
 
 class ExplorePage extends StatefulWidget {
   static String id = 'Explore_Page';
@@ -63,7 +64,9 @@ class _ExplorePageState extends State<ExplorePage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Wallpapers'),
+        title: Text(
+          'Wallpapers',
+        ),
         titleTextStyle: TextStyle(
             fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w300),
       ),
@@ -82,6 +85,11 @@ class _ExplorePageState extends State<ExplorePage> {
                   children: [
                     Expanded(
                       child: TextField(
+                        onSubmitted: (value){
+                          searchText=value;
+                          clearText();
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchPage(searchItem: searchText),),);
+                        },
                         controller: _controller,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -93,10 +101,15 @@ class _ExplorePageState extends State<ExplorePage> {
                             color: Colors.white,
                           ),
                           suffixIcon: IconButton(
-                              onPressed: () {
-                                clearText();
-                              },
-                              icon: Icon(Icons.clear,color: Colors.white,)),
+                            onPressed: () {
+                              clearText();
+                            },
+                            icon: Icon(
+                              Icons.clear,
+                              size: 24.0,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     )
@@ -148,25 +161,45 @@ class _ExplorePageState extends State<ExplorePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CircularIconButton(
-                          onpressed: () {},
-                          iconname: 'Top',
+                          onpressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SearchPage(searchItem: 'Pets'),
+                              ),
+                            );
+                          },
+                          iconname: 'Pets',
                           icon: Icon(
-                            Icons.mood,
+                            Icons.pets,
                             color: Colors.white,
                           ),
                           color: Colors.purple,
                         ),
                         CircularIconButton(
-                          onpressed: () {},
-                          iconname: 'Collections',
+                          onpressed: () {Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SearchPage(searchItem: 'Dark'),
+                            ),
+                          );},
+                          iconname: 'Dark',
                           icon: Icon(
-                            Icons.collections_bookmark_outlined,
+                            Icons.nights_stay_outlined,
                             color: Colors.white,
                           ),
                           color: Colors.red,
                         ),
                         CircularIconButton(
-                          onpressed: () {},
+                          onpressed: () {Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SearchPage(searchItem: 'Nature'),
+                            ),
+                          );},
                           iconname: 'Nature',
                           icon: Icon(
                             Icons.filter_vintage_outlined,
@@ -188,48 +221,6 @@ class _ExplorePageState extends State<ExplorePage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class WallpaperGridBuilder extends StatelessWidget {
-  const WallpaperGridBuilder({
-    Key? key,
-    required this.gridimagelist,
-  }) : super(key: key);
-
-  final List<Image> gridimagelist;
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.symmetric(horizontal: 18.0),
-      itemCount: 9,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: 18.0,
-          crossAxisSpacing: 10.0,
-          childAspectRatio: 1 / 2),
-      itemBuilder: (_, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ItemPage(Wallpaper: gridimagelist[index]),
-              ),
-            );
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child:
-                gridimagelist.length == 0 ? Container() : gridimagelist[index],
-          ),
-        );
-      },
     );
   }
 }
