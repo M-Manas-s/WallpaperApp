@@ -1,16 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/screens/itempage.dart';
 
 class WallpaperGridBuilder extends StatelessWidget {
   const WallpaperGridBuilder({
     Key? key,
-    required this.gridimagelist,
-  }) : super(key: key);
+    required this.gridimagelist,  this.isLiked=false,
+  } ) : super(key: key);
 
-  final List<dynamic> gridimagelist;
+  final List<WallPaper> gridimagelist;
+  final bool isLiked;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class WallpaperGridBuilder extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.symmetric(horizontal: 18.0),
-            itemCount: 12,
+            itemCount: gridimagelist.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 18.0,
@@ -33,19 +34,19 @@ class WallpaperGridBuilder extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ItemPage(Wallpaper: gridimagelist[index]),
+                      builder: (_) => ItemPage(Wallpaper: gridimagelist[index],isLiked: isLiked),
                     ),
                   );
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: CachedNetworkImage(
-                    imageUrl: gridimagelist[index]['regular'],
+                    imageUrl: gridimagelist[index].regular,
                     fit: BoxFit.fitHeight,
                     placeholder: (_, __) {
                       return AspectRatio(
                         aspectRatio: 1.6,
-                        child: BlurHash(hash: gridimagelist[index]['blur'],),
+                        child: BlurHash(hash: gridimagelist[index].blur,),
                       );
                     },
                   ),

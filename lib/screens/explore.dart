@@ -1,20 +1,17 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:wallpaperapp/constants/LocalUser.dart';
+import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/widgets/circulariconbutton.dart';
 import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
-import 'package:wallpaperapp/services/Networking.dart';
 import 'SearchPage.dart';
+
 
 class ExplorePage extends StatefulWidget {
   static String id = 'Explore_Page';
-  final List<dynamic> preLoadedImages;
-  final List<dynamic> featuredImages;
+  final List<WallPaper> preLoadedImages;
+  final List<WallPaper> featuredImages;
 
   const ExplorePage(
       {Key? key, required this.preLoadedImages, required this.featuredImages})
@@ -25,28 +22,29 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+
   TextEditingController _controller = TextEditingController();
   List<CachedNetworkImage> featured = [];
   late String searchText;
   var decodeddata;
   int floaded = 0;
-  List<String> imageList = [
-    'images/img1.jpg',
-    'images/img2.jpg',
-    'images/img3.jpg',
-    'images/img4.jpg',
-  ];
 
   @override
   void initState() {
     widget.featuredImages.forEach((element) {
-      featured.add(CachedNetworkImage(imageUrl :element['image'], fit: BoxFit.fitWidth,placeholder: (_, __) {
-        return AspectRatio(
-          aspectRatio: 1.6,
-          child: BlurHash(hash: element['blur'],),
-        );
-      },));
-      });
+      featured.add(CachedNetworkImage(
+        imageUrl: element.regular,
+        fit: BoxFit.fitWidth,
+        placeholder: (_, __) {
+          return AspectRatio(
+            aspectRatio: 1.6,
+            child: BlurHash(
+              hash: element.blur,
+            ),
+          );
+        },
+      ));
+    });
     super.initState();
   }
 
@@ -56,10 +54,9 @@ class _ExplorePageState extends State<ExplorePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -83,8 +80,13 @@ class _ExplorePageState extends State<ExplorePage> {
                       onSubmitted: (value) {
                         searchText = value;
                         clearText();
-                        Navigator.push(context, MaterialPageRoute(builder: (
-                            context) => SearchPage(searchItem: searchText),),);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SearchPage(searchItem: searchText),
+                          ),
+                        );
                       },
                       controller: _controller,
                       style: TextStyle(color: Colors.white),
@@ -121,7 +123,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   decoration: BoxDecoration(
                     border: Border.symmetric(
                         horizontal:
-                        BorderSide(color: Colors.white, width: 1.5)),
+                            BorderSide(color: Colors.white, width: 1.5)),
                     // borderRadius: BorderRadius.circular(30.0),
                   ),
                   child: ImageSlideshow(
@@ -131,7 +133,9 @@ class _ExplorePageState extends State<ExplorePage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width*0.03, vertical: size.height*0.03),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.03,
+                      vertical: size.height * 0.03),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/services/Networking.dart';
 import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
 
@@ -13,11 +14,12 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   var decodeddata;
-  List<String> imageList = [];
+  List<WallPaper> imageList = [];
 
   Future<dynamic> getCollectionData(String typeOfCollection) async {
     var imagedata = await NetworkHelper().getWallpaper(
         'https://api.unsplash.com/search/photos?query=$typeOfCollection&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI');
+
     setState(() {
       decodeddata = imagedata;
     });
@@ -25,10 +27,14 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void appenddatainList() {
-    for (int i = 0; i < 9; i++) {
+    for (var x in decodeddata['results']) {
       setState(() {
         imageList.add(
-          decodeddata['results'][i]['urls']['regular'],
+          WallPaper(
+            blur: x['blur_hash'],
+            regular: x['urls']['regular'],
+            full: x['urls']['full'],
+          ),
         );
       });
     }

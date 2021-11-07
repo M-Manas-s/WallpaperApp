@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wallpaperapp/constants/LocalUser.dart';
+import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/screens/explore.dart';
 import 'package:wallpaperapp/services/Networking.dart';
 
@@ -71,25 +72,23 @@ class _LoadingPageState extends State<LoadingPage> {
     String urlFeatured =
         "https://api.unsplash.com/photos/random?per_page=12&count=4&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI";
 
-    List<dynamic> localList = [];
-    List<dynamic> featured = [];
+    List<WallPaper> localList = [];
+    List<WallPaper> featured = [];
 
     var imagedata1 = await NetworkHelper().getWallpaper(urlStandard);
     var imagedata2 = await NetworkHelper().getWallpaper(urlFeatured);
 
     for (var x in imagedata1) {
-      localList.add({
-        'regular': x['urls']['regular'],
-        'full': x['urls']['full'],
-        'blur': x['blur_hash']
-      });
+      localList.add(WallPaper(blur:  x['blur_hash'],regular:x['urls']['regular'],full: x['urls']['full'], ));
+
       CachedNetworkImage(
         imageUrl: x['urls']['regular'],
       );
     }
 
+
     for (var x in imagedata2) {
-      featured.add({'image': x['urls']['regular'], 'blur': x['blur_hash']});
+      featured.add(WallPaper(blur: x['blur_hash'], regular: x['urls']['regular'], full: x['urls']['full']));
       CachedNetworkImage(
         imageUrl: x['urls']['regular'],
       );
