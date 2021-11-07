@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallpaperapp/constants/LocalUser.dart';
+import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/constants/RegexValidators.dart';
 import 'package:wallpaperapp/constants/constants.dart';
 import 'package:wallpaperapp/screens/SignIn.dart';
@@ -160,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         password = value.trim();
                                       },
                                       obscureText: state,
-                                      cursorColor: Theme.of(context).accentColor,
+                                      cursorColor: Colors.white,
                                       textAlign: TextAlign.left,
                                       decoration: kLogInInputDecoration.copyWith(
                                           hintText: "Password"),

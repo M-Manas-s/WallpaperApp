@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
-import 'package:wallpaperapp/constants/LocalUser.dart';
+import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/screens/explore.dart';
 import 'package:wallpaperapp/services/Networking.dart';

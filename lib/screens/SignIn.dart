@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallpaperapp/constants/LocalUser.dart';
+import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/constants/RegexValidators.dart';
 import 'package:wallpaperapp/constants/constants.dart';
 import 'package:wallpaperapp/widgets/AuthenticationButton.dart';
@@ -165,8 +164,7 @@ class _SignInPageState extends State<SignInPage> {
                                         password = value.trim();
                                       },
                                       obscureText: state,
-                                      cursorColor:
-                                          Theme.of(context).accentColor,
+                                      cursorColor: Colors.white,
                                       textAlign: TextAlign.left,
                                       decoration: kLogInInputDecoration
                                           .copyWith(hintText: "Password"),
