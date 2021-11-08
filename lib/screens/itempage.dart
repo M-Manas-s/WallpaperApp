@@ -3,31 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:like_button/like_button.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
+import 'LandingPage.dart';
 
 class ItemPage extends StatefulWidget {
-  WallPaper Wallpaper;
-  bool isLiked;
+  WallPaper wallpaper;
 
-  ItemPage({required this.Wallpaper, required this.isLiked});
+  ItemPage({required this.wallpaper});
 
   @override
   _ItemPageState createState() => _ItemPageState();
 }
 
 class _ItemPageState extends State<ItemPage> {
-  // Future<bool> onLikeButtonTapped(bool value) async{
-  //   /// send your request here
-  //   // final bool success= await sendRequest();
-  //
-  //   /// if failed, you can do nothing
-  //   // return success? !isLiked:isLiked;
-  //
-  //   setState(() {
-  //     widget.isLiked= !widget.isLiked;
-  //   });
-  //   Provider.of<LocalUser>(context,listen: false).addWallpaperToLiked(widget.Wallpaper['regular']);
-  //   return null;
-  // }
+
+  late bool localIsLiked;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    localIsLiked = LocalUserData.of(context).localUser.exists(widget.wallpaper);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,24 +35,23 @@ class _ItemPageState extends State<ItemPage> {
                 width: MediaQuery.of(context).size.width + 200,
                 height: MediaQuery.of(context).size.height,
                 child: CachedNetworkImage(
-                  imageUrl: widget.Wallpaper.full,
+                  imageUrl: widget.wallpaper.full,
                   fit: BoxFit.fitHeight,
                   placeholder: (_, __) {
                     return AspectRatio(
                       aspectRatio: 1.6,
                       child: BlurHash(
-                        hash: widget.Wallpaper.blur,
+                        hash: widget.wallpaper.blur,
                       ),
                     );
                   },
                 )),
           ),
           Positioned(
-            right: 100.0,
+            right: 20.0,
             bottom: 170.0,
             child: LikeButton(
-              // onTap: onLikeButtonTapped,
-              // isLiked: user.urlChecker(widget.Wallpaper),  //Use Inherited widget
+              isLiked: LocalUserData.of(context).localUser.exists(widget.wallpaper),  //Use Inherited widget
               size: 30.0,
               circleColor:
                   CircleColor(start: Colors.redAccent, end: Colors.red),
@@ -66,31 +60,14 @@ class _ItemPageState extends State<ItemPage> {
                 dotSecondaryColor: Colors.red,
               ),
               likeBuilder: (bool isLiked) {
-                if (widget.isLiked != isLiked) {
-                  widget.isLiked = isLiked;
+                if (localIsLiked != isLiked) {
+                  localIsLiked = isLiked;
                   if (isLiked) {
-
-                    // if liked is pressed
-
-                    // FirebaseFirestore.instance
-                    //     .collection('Users')
-                    //     .doc(LocalUser.id)
-                    //     .update({
-                    //   "LikedURLs": {'abc': widget.Wallpaper.full}
-                    // });
+                    LocalUserData.of(context).localUser.addWallpaperToLiked(widget.wallpaper);
                   } else {
-
-                    // if unliked (like pressed when it was liked)
-
-                    // FirebaseFirestore.instance
-                    //     .collection('Users')
-                    //     .doc(LocalUser.id)
-                    //     .update({
-                    //   "LikedURLs": {'abc': 'null'}
-                    // });
+                    LocalUserData.of(context).localUser.deleteLiked(widget.wallpaper);
                   }
                 }
-
                 return Icon(
                   Icons.favorite,
                   size: 30.0,

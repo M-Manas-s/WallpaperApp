@@ -6,7 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
-import 'package:wallpaperapp/screens/default.dart';
+import 'package:wallpaperapp/screens/LandingPage.dart';
 import 'package:wallpaperapp/services/Networking.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -85,8 +85,7 @@ class _LoadingPageState extends State<LoadingPage> {
         imageUrl: x['urls']['regular'],
       );
     }
-
-
+    
     for (var x in imagedata2) {
       featured.add(WallPaper(blur: x['blur_hash'], regular: x['urls']['regular'], full: x['urls']['full']));
       CachedNetworkImage(
@@ -98,7 +97,7 @@ class _LoadingPageState extends State<LoadingPage> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (context) => DefaultPage(
+              builder: (context) => LandingPage(
                     preLoadedImages: localList,
                     featuredImages: featured,
                   )),

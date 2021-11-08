@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
+import 'package:wallpaperapp/screens/LikedScreen.dart';
 import 'package:wallpaperapp/widgets/circulariconbutton.dart';
 import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
 import 'SearchPage.dart';
@@ -179,7 +180,7 @@ class _ExplorePageState extends State<ExplorePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  SearchPage(searchItem: 'Nature'),
+                                  LikedPage(),
                             ),
                           );
                         },

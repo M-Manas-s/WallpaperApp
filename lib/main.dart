@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallpaperapp/constants/LocalUser.dart';
+import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/screens/IntroPage.dart';
 import 'package:wallpaperapp/screens/LoadingPage.dart';
 
@@ -45,7 +45,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin{
 
   loadPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //prefs.remove('email'); // Uncommend this to always reach Auth Page
+    // prefs.remove('email'); // Uncommend this to always reach Auth Page
     email = prefs.getString('email')??"";
     if ( email!="" )
         LocalUser.email = email;
