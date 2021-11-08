@@ -6,7 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
-import 'package:wallpaperapp/screens/explore.dart';
+import 'package:wallpaperapp/screens/default.dart';
 import 'package:wallpaperapp/services/Networking.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -98,7 +98,7 @@ class _LoadingPageState extends State<LoadingPage> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (context) => ExplorePage(
+              builder: (context) => DefaultPage(
                     preLoadedImages: localList,
                     featuredImages: featured,
                   )),
