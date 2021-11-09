@@ -15,7 +15,7 @@ class LocalUser {
   }
 
   addWallpaperToDB(WallPaper wallPaper) {
-    FirebaseFirestore.instance.collection('Users').doc(id).update({
+    return FirebaseFirestore.instance.collection('Users').doc(id).update({
       'LikedURLs': FieldValue.arrayUnion([wallPaper.toMap])
     });
   }
@@ -48,23 +48,11 @@ class LocalUser {
   }
 
   deleteLiked(WallPaper wallPaper) async{
-    List<WallPaper> temp = [];
     likedImages.removeAt(indexOf(wallPaper));
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(id)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      for (var x in documentSnapshot['LikedURLs']) {
-        print("Found ${documentSnapshot['LikedURLs'].length} pics");
-        if (x['regular'] != wallPaper.regular)
-          temp.add(WallPaper(regular: x['regular'], full: x['full'], blur: x['full']));
-      }
-    });
     FirebaseFirestore.instance.collection('Users').doc(id).update({
       'LikedURLs': []
     });
-    for (var x in temp)
-      addWallpaperToDB(x);
+    for (var x in likedImages)
+      await addWallpaperToDB(x);
   }
 }

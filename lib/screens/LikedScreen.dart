@@ -24,7 +24,7 @@ class _LikedPageState extends State<LikedPage> {
         .then((DocumentSnapshot documentSnapshot) {
       for (var x in documentSnapshot['LikedURLs'])
         LocalUserData.of(context).localUser.localAdd(
-            WallPaper(regular: x['regular'], full: x['full'], blur: x['full']));
+            WallPaper(regular: x['regular'], full: x['full'], blur: x['blur']));
       print(
           "Received ${LocalUserData.of(context).localUser.likedImages.length} liked images");
       return "Ok";
