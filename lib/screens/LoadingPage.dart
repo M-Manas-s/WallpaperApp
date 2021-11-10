@@ -79,15 +79,22 @@ class _LoadingPageState extends State<LoadingPage> {
     var imagedata2 = await NetworkHelper().getWallpaper(urlFeatured);
 
     for (var x in imagedata1) {
-      localList.add(WallPaper(blur:  x['blur_hash'],regular:x['urls']['regular'],full: x['urls']['full'], ));
+      localList.add(WallPaper(
+        blur: x['blur_hash'],
+        regular: x['urls']['regular'],
+        full: x['urls']['full'],
+      ));
 
       CachedNetworkImage(
         imageUrl: x['urls']['regular'],
       );
     }
-    
+
     for (var x in imagedata2) {
-      featured.add(WallPaper(blur: x['blur_hash'], regular: x['urls']['regular'], full: x['urls']['full']));
+      featured.add(WallPaper(
+          blur: x['blur_hash'],
+          regular: x['urls']['regular'],
+          full: x['urls']['full']));
       CachedNetworkImage(
         imageUrl: x['urls']['regular'],
       );

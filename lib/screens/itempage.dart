@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
+import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
-import 'LandingPage.dart';
 
 class ItemPage extends StatefulWidget {
   WallPaper wallpaper;
@@ -15,44 +16,37 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-
-  late bool localIsLiked;
-
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    localIsLiked = LocalUserData.of(context).localUser.exists(widget.wallpaper);
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    bool localIsLiked =
+        Provider.of<LocalUser>(context,listen: false).exists(widget.wallpaper);
     return Scaffold(
       body: Stack(
         children: [
-          GestureDetector(
-            onHorizontalDragDown: (value) {},
-            child: Container(
-                width: MediaQuery.of(context).size.width + 200,
-                height: MediaQuery.of(context).size.height,
-                child: CachedNetworkImage(
-                  imageUrl: widget.wallpaper.full,
-                  fit: BoxFit.fitHeight,
-                  placeholder: (_, __) {
-                    return AspectRatio(
-                      aspectRatio: 1.6,
-                      child: BlurHash(
-                        hash: widget.wallpaper.blur,
-                      ),
-                    );
-                  },
-                )),
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width + 200,
+              height: MediaQuery.of(context).size.height,
+              child: CachedNetworkImage(
+                imageUrl: widget.wallpaper.full,
+                fit: BoxFit.fitHeight,
+                placeholder: (_, __) {
+                  return AspectRatio(
+                    aspectRatio: 1.6,
+                    child: BlurHash(
+                      hash: widget.wallpaper.blur,
+                    ),
+                  );
+                },
+              )),
           Positioned(
             right: 20.0,
             bottom: 170.0,
             child: LikeButton(
-              isLiked: LocalUserData.of(context).localUser.exists(widget.wallpaper),  //Use Inherited widget
-              size: 30.0,
+              isLiked: localIsLiked, //Use Inherited widget
+              size: 60.0,
               circleColor:
                   CircleColor(start: Colors.redAccent, end: Colors.red),
               bubblesColor: BubblesColor(
@@ -60,19 +54,52 @@ class _ItemPageState extends State<ItemPage> {
                 dotSecondaryColor: Colors.red,
               ),
               likeBuilder: (bool isLiked) {
-                if (localIsLiked != isLiked) {
-                  localIsLiked = isLiked;
-                  if (isLiked) {
-                    LocalUserData.of(context).localUser.addWallpaperToLiked(widget.wallpaper);
-                  } else {
-                    LocalUserData.of(context).localUser.deleteLiked(widget.wallpaper);
-                  }
-                }
                 return Icon(
                   Icons.favorite,
                   size: 30.0,
                   color: isLiked ? Colors.redAccent : Colors.grey,
                 );
+              },
+              onTap: (isLiked) async {
+                if(localIsLiked!=isLiked){
+                  setState(() {
+                    localIsLiked = isLiked;
+                  });
+                  if (Provider.of<LocalUser>(context,listen: false).exists(widget.wallpaper)) {
+
+                    await Provider.of<LocalUser>(context, listen: false)
+                        .deleteLiked(widget.wallpaper);
+                  } else {
+
+                    await Provider.of<LocalUser>(context, listen: false)
+                        .addWallpaperToLiked(widget.wallpaper);
+                  }
+                } else{
+                  if (Provider.of<LocalUser>(context,listen: false).exists(widget.wallpaper)) {
+
+                    await Provider.of<LocalUser>(context, listen: false)
+                        .deleteLiked(widget.wallpaper);
+                  } else {
+
+                    await Provider.of<LocalUser>(context, listen: false)
+                        .addWallpaperToLiked(widget.wallpaper);
+                  }
+                }
+                return !isLiked;
+              },
+            ),
+          ),
+          Positioned(
+            left: 10.0,
+            top: 50.0,
+            child: IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_left,
+                color: Colors.black,
+                size: 40.0,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
               },
             ),
           ),

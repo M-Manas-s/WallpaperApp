@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
 
-class LocalUser {
+class LocalUser extends ChangeNotifier{
   static late String id;
   static late String email;
   List<WallPaper> likedImages = [];
@@ -29,6 +30,7 @@ class LocalUser {
     } else {
       print('exist');
     }
+    notifyListeners();
   }
 
   get getId {
@@ -54,5 +56,9 @@ class LocalUser {
     });
     for (var x in likedImages)
       await addWallpaperToDB(x);
+
+
+    notifyListeners();
   }
+
 }

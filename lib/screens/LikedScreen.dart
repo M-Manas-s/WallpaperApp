@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
-import 'LandingPage.dart';
 
 class LikedPage extends StatefulWidget {
   static String id = 'Liked_Page';
@@ -15,18 +16,18 @@ class LikedPage extends StatefulWidget {
 
 class _LikedPageState extends State<LikedPage> {
   Future<String>? updateList() {
-    String id = LocalUserData.of(context).localUser.getId;
-    LocalUserData.of(context).localUser.erase();
+    String id = Provider.of<LocalUser>(context, listen: false).getId;
+    Provider.of<LocalUser>(context).erase();
     return FirebaseFirestore.instance
         .collection('Users')
         .doc(id)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       for (var x in documentSnapshot['LikedURLs'])
-        LocalUserData.of(context).localUser.localAdd(
+        Provider.of<LocalUser>(context, listen: false).localAdd(
             WallPaper(regular: x['regular'], full: x['full'], blur: x['blur']));
       print(
-          "Received ${LocalUserData.of(context).localUser.likedImages.length} liked images");
+          "Received ${Provider.of<LocalUser>(context).likedImages.length} liked images");
       return "Ok";
     });
   }
@@ -54,11 +55,10 @@ class _LikedPageState extends State<LikedPage> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: WallpaperGridBuilder(
-                  gridimagelist:
-                      LocalUserData.of(context).localUser.likedImages,
+                  gridimagelist: Provider.of<LocalUser>(context).likedImages,
                   mutableList: true,
-                  mutableLength:
-                      LocalUserData.of(context).localUser.likedImages.length,
+                  // mutableLength:
+                  //     LocalUserData.of(context).localUser.likedImages.length,
                 ),
               );
           }
