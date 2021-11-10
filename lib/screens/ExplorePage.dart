@@ -8,7 +8,6 @@ import 'package:wallpaperapp/widgets/circulariconbutton.dart';
 import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
 import 'SearchPage.dart';
 
-
 class ExplorePage extends StatefulWidget {
   static String id = 'Explore_Page';
   final List<WallPaper> preLoadedImages;
@@ -23,7 +22,6 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-
   TextEditingController _controller = TextEditingController();
   List<CachedNetworkImage> featured = [];
   late String searchText;
@@ -57,7 +55,14 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, LikedPage.id);
+        },
+        backgroundColor: Colors.white,
+        child: Icon(Icons.favorite,color: Colors.black,size: 28.0,),
+        tooltip: 'Go to Liked Page',
+      ),
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -179,8 +184,7 @@ class _ExplorePageState extends State<ExplorePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  LikedPage(),
+                              builder: (context) => SearchPage(searchItem: 'Nature'),
                             ),
                           );
                         },
