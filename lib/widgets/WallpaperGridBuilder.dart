@@ -21,7 +21,7 @@ class WallpaperGridBuilder extends StatefulWidget {
 }
 
 class _WallpaperGridBuilderState extends State<WallpaperGridBuilder> {
-  
+
   @override
   Widget build(BuildContext context) {
     final int? mutableLength =
