@@ -21,20 +21,20 @@ class WallpaperGridBuilder extends StatefulWidget {
 }
 
 class _WallpaperGridBuilderState extends State<WallpaperGridBuilder> {
-
   @override
   Widget build(BuildContext context) {
     final int? mutableLength =
         Provider.of<LocalUser>(context).likedImages.length;
 
     return widget.gridimagelist.length == 0
-        ? widget.mutableList
-            ? Container(
-                child: Center(
-                  child: Text('No Liked Images'),
-                ),
-              )
-            : Container()
+        ? Container(
+            child: Center(
+              child: Text(
+                'No Liked Images',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          )
         : GridView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

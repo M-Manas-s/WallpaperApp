@@ -5,9 +5,10 @@ import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:wallpaperapp/modals/LocalUser.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
+import 'package:wallpaperapp/services/AppBrain.dart';
 
 class ItemPage extends StatefulWidget {
-  WallPaper wallpaper;
+  final WallPaper wallpaper;
 
   ItemPage({required this.wallpaper});
 
@@ -16,13 +17,15 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  @override
-
+  int dropdownvalue = 80;
+  void getanddownload(int qualtity) async {
+    await AppBrain().save(widget.wallpaper.full, qualtity);
+  }
 
   @override
   Widget build(BuildContext context) {
     bool localIsLiked =
-        Provider.of<LocalUser>(context,listen: false).exists(widget.wallpaper);
+        Provider.of<LocalUser>(context, listen: false).exists(widget.wallpaper);
     return Scaffold(
       body: Stack(
         children: [
@@ -61,26 +64,24 @@ class _ItemPageState extends State<ItemPage> {
                 );
               },
               onTap: (isLiked) async {
-                if(localIsLiked!=isLiked){
+                if (localIsLiked != isLiked) {
                   setState(() {
                     localIsLiked = isLiked;
                   });
-                  if (Provider.of<LocalUser>(context,listen: false).exists(widget.wallpaper)) {
-
+                  if (Provider.of<LocalUser>(context, listen: false)
+                      .exists(widget.wallpaper)) {
                     await Provider.of<LocalUser>(context, listen: false)
                         .deleteLiked(widget.wallpaper);
                   } else {
-
                     await Provider.of<LocalUser>(context, listen: false)
                         .addWallpaperToLiked(widget.wallpaper);
                   }
-                } else{
-                  if (Provider.of<LocalUser>(context,listen: false).exists(widget.wallpaper)) {
-
+                } else {
+                  if (Provider.of<LocalUser>(context, listen: false)
+                      .exists(widget.wallpaper)) {
                     await Provider.of<LocalUser>(context, listen: false)
                         .deleteLiked(widget.wallpaper);
                   } else {
-
                     await Provider.of<LocalUser>(context, listen: false)
                         .addWallpaperToLiked(widget.wallpaper);
                   }
@@ -105,28 +106,47 @@ class _ItemPageState extends State<ItemPage> {
           ),
           Positioned(
             bottom: 30.0,
-            left: MediaQuery.of(context).size.width / 4,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
-              height: 50.0,
-              child: TextButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                  elevation: MaterialStateProperty.all(5.0),
-                ),
+            left: MediaQuery.of(context).size.width / 3,
+            child: DropdownButton<int>(
+              icon: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  getanddownload(dropdownvalue);
                 },
-                child: Text(
-                  'Download/Apply',
-                  style: TextStyle(color: Colors.white, fontSize: 16.0),
+                icon: Icon(
+                  Icons.file_download,
+                  color: Colors.white,
                 ),
               ),
+              dropdownColor: Colors.black,
+              value: dropdownvalue,
+              items: [
+                DropdownMenuItem<int>(
+                  value: 80,
+                  child: Text(
+                    'High',
+                    style: TextStyle(color: Colors.white, fontSize: 16.0),
+                  ),
+                ),
+                DropdownMenuItem<int>(
+                  value: 60,
+                  child: Text(
+                    'Medium',
+                    style: TextStyle(color: Colors.white, fontSize: 16.0),
+                  ),
+                ),
+                DropdownMenuItem<int>(
+                  value: 30,
+                  child: Text(
+                    'Low',
+                    style: TextStyle(color: Colors.white, fontSize: 16.0),
+                  ),
+                ),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  dropdownvalue = value!;
+                });
+              },
             ),
           ),
         ],
