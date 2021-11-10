@@ -42,6 +42,7 @@ class _LandingPageState extends State<LandingPage> {
     return ChangeNotifierProvider<LocalUser>(
       create: (context)=>LocalUser(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         initialRoute: ExplorePage.id,
         routes: {
           ExplorePage.id: (context) => ExplorePage(
