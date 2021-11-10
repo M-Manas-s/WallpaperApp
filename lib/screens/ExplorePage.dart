@@ -59,8 +59,8 @@ class _ExplorePageState extends State<ExplorePage> {
         onPressed: () {
           Navigator.pushNamed(context, LikedPage.id);
         },
-        backgroundColor: Colors.white,
-        child: Icon(Icons.favorite,color: Colors.black,size: 28.0,),
+        backgroundColor: Colors.black,
+        child: Icon(Icons.favorite_border,color: Colors.white,size: 28.0,),
         tooltip: 'Go to Liked Page',
       ),
       backgroundColor: Colors.black,
