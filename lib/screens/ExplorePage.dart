@@ -4,6 +4,7 @@ import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/screens/LikedScreen.dart';
+import 'package:wallpaperapp/services/Networking.dart';
 import 'package:wallpaperapp/widgets/circulariconbutton.dart';
 import 'package:wallpaperapp/widgets/WallpaperGridBuilder.dart';
 import 'SearchPage.dart';
@@ -24,9 +25,12 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   TextEditingController _controller = TextEditingController();
   List<CachedNetworkImage> featured = [];
+  ScrollController _scrollController = ScrollController();
   late String searchText;
   var decodeddata;
   int floaded = 0;
+  bool loadingNewImages = false;
+  int loadedPages=1;
 
   @override
   void initState() {
@@ -44,11 +48,55 @@ class _ExplorePageState extends State<ExplorePage> {
         },
       ));
     });
+
     super.initState();
+  }
+
+  getImages() async {
+    String urlStandard =
+        'https://api.unsplash.com/photos?per_page=30&page=${loadedPages++}&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI';
+
+    var imagedata1 = await NetworkHelper().getWallpaper(urlStandard);
+
+    for (var x in imagedata1) {
+      widget.preLoadedImages.add(WallPaper(
+        blur: x['blur_hash'],
+        regular: x['urls']['regular'],
+        full: x['urls']['full'],
+      ));
+      CachedNetworkImage(
+        imageUrl: x['urls']['regular'],
+      );
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollController.addListener(() async {
+      if ( _scrollController.position.pixels == _scrollController.position.maxScrollExtent && !loadingNewImages )
+      {
+        print("Calling new data");
+        setState(() {
+          loadingNewImages = true;
+        });
+        await getImages();
+        setState(() {
+          loadingNewImages = false;
+        });
+      }
+    });
   }
 
   void clearText() {
     _controller.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -71,6 +119,7 @@ class _ExplorePageState extends State<ExplorePage> {
             fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w300),
       ),
       body: CustomScrollView(
+        controller: _scrollController,
         scrollDirection: Axis.vertical,
         slivers: [
           SliverAppBar(
@@ -207,7 +256,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   subtitle: 'Special ones for you',
                 ),
                 SizedBox(height: size.height*0.01,),
-                WallpaperGridBuilder(gridimagelist: widget.preLoadedImages),
+                WallpaperGridBuilder(gridimagelist: widget.preLoadedImages, loading: loadingNewImages,),
               ],
             ),
           )

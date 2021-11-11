@@ -77,9 +77,8 @@ class _ItemPageState extends State<ItemPage> {
                     );
                   },
                   onTap: (isLiked) async {
-                    if (localIsLiked != isLiked) {
                       setState(() {
-                        localIsLiked = isLiked;
+                        localIsLiked = !localIsLiked;
                       });
                       if (Provider.of<LocalUser>(context, listen: false)
                           .exists(widget.wallpaper)) {
@@ -89,16 +88,6 @@ class _ItemPageState extends State<ItemPage> {
                         await Provider.of<LocalUser>(context, listen: false)
                             .addWallpaperToLiked(widget.wallpaper);
                       }
-                    } else {
-                      if (Provider.of<LocalUser>(context, listen: false)
-                          .exists(widget.wallpaper)) {
-                        await Provider.of<LocalUser>(context, listen: false)
-                            .deleteLiked(widget.wallpaper);
-                      } else {
-                        await Provider.of<LocalUser>(context, listen: false)
-                            .addWallpaperToLiked(widget.wallpaper);
-                      }
-                    }
                     return !isLiked;
                   },
                 )
@@ -166,6 +155,7 @@ class _ItemPageState extends State<ItemPage> {
                   ),
                   IconButton(
                     onPressed: () {
+                      print("pressed");
                       getanddownload(dropdownvalue);
                     },
                     icon: Icon(

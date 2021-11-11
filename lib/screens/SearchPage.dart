@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wallpaperapp/modals/WallpaperClass.dart';
 import 'package:wallpaperapp/services/Networking.dart';
@@ -13,20 +14,61 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  var decodeddata;
   List<WallPaper> imageList = [];
+  int loadedPages=1;
+  bool loading = false;
+  ScrollController _scrollController = ScrollController();
 
   Future<dynamic> getCollectionData(String typeOfCollection) async {
     var imagedata = await NetworkHelper().getWallpaper(
-        'https://api.unsplash.com/search/photos?per_page=9&query=$typeOfCollection&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI');
-
-    setState(() {
-      decodeddata = imagedata;
-    });
-    appenddatainList();
+        'https://api.unsplash.com/search/photos?per_page=9&query=$typeOfCollection&page=${loadedPages++}&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI');
+    appenddatainList(imagedata);
+    return Future.delayed(Duration(milliseconds: 100));
   }
 
-  void appenddatainList() {
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollController.addListener(() async {
+      if ( _scrollController.position.pixels == _scrollController.position.maxScrollExtent && !loading )
+      {
+        print("Calling new data");
+        setState(() {
+          loading = true;
+        });
+        await getImages();
+        setState(() {
+          loading = false;
+        });
+      }
+    });
+  }
+
+  getImages() async {
+
+    String urlStandard =
+        'https://api.unsplash.com/search/photos?per_page=9&query=${widget.searchItem}&page=${loadedPages++}&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI';
+    var imagedata1 = await NetworkHelper().getWallpaper(urlStandard);
+    for (var x in imagedata1['results']) {
+      imageList.add(WallPaper(
+        blur: x['blur_hash'],
+        regular: x['urls']['regular'],
+        full: x['urls']['full'],
+      ));
+      CachedNetworkImage(
+        imageUrl: x['urls']['regular'],
+      );
+    }
+  }
+
+
+  void appenddatainList(var decodeddata) {
     for (var x in decodeddata['results']) {
       setState(() {
         imageList.add(
@@ -40,26 +82,38 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getCollectionData(widget.searchItem);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                WallpaperGridBuilder(gridimagelist: imageList),
-              ],
-            ),
-          )
-        ],
+      body: SafeArea(
+        child: FutureBuilder(
+          future: getCollectionData(widget.searchItem),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              case ConnectionState.done:
+                return CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          WallpaperGridBuilder(gridimagelist: imageList, loading: loading,),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+            }
+          },
+        ),
       ),
     );
   }

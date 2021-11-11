@@ -54,12 +54,7 @@ class _LikedPageState extends State<LikedPage> {
             case ConnectionState.done:
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: WallpaperGridBuilder(
-                  gridimagelist: Provider.of<LocalUser>(context).likedImages,
-                  mutableList: true,
-                  // mutableLength:
-                  //     LocalUserData.of(context).localUser.likedImages.length,
-                ),
+                child: WallpaperGridBuilder( gridimagelist: Provider.of<LocalUser>(context).likedImages), //mutableLength : Provider.of<LocalUser>(context).likedImages.length;),
               );
           }
         },

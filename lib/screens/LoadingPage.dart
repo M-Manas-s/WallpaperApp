@@ -84,7 +84,6 @@ class _LoadingPageState extends State<LoadingPage> {
         regular: x['urls']['regular'],
         full: x['urls']['full'],
       ));
-
       CachedNetworkImage(
         imageUrl: x['urls']['regular'],
       );
