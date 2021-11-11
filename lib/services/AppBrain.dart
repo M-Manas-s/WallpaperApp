@@ -9,7 +9,7 @@ class AppBrain {
     final result = await ImageGallerySaver.saveImage(
         Uint8List.fromList(response.data),
         quality: quality,
-        name: "hello");
+        name: "Image${DateTime.now().millisecondsSinceEpoch}");
     print(result);
   }
 

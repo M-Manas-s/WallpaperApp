@@ -18,6 +18,7 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   int dropdownvalue = 80;
+
   void getanddownload(int qualtity) async {
     await AppBrain().save(widget.wallpaper.full, qualtity);
   }
@@ -45,49 +46,63 @@ class _ItemPageState extends State<ItemPage> {
                 },
               )),
           Positioned(
-            right: 20.0,
+            right: 15.0,
             bottom: 170.0,
-            child: LikeButton(
-              isLiked: localIsLiked, //Use Inherited widget
-              size: 60.0,
-              circleColor:
-                  CircleColor(start: Colors.redAccent, end: Colors.red),
-              bubblesColor: BubblesColor(
-                dotPrimaryColor: Colors.redAccent,
-                dotSecondaryColor: Colors.red,
-              ),
-              likeBuilder: (bool isLiked) {
-                return Icon(
-                  Icons.favorite,
-                  size: 30.0,
-                  color: isLiked ? Colors.redAccent : Colors.grey,
-                );
-              },
-              onTap: (isLiked) async {
-                if (localIsLiked != isLiked) {
-                  setState(() {
-                    localIsLiked = isLiked;
-                  });
-                  if (Provider.of<LocalUser>(context, listen: false)
-                      .exists(widget.wallpaper)) {
-                    await Provider.of<LocalUser>(context, listen: false)
-                        .deleteLiked(widget.wallpaper);
-                  } else {
-                    await Provider.of<LocalUser>(context, listen: false)
-                        .addWallpaperToLiked(widget.wallpaper);
-                  }
-                } else {
-                  if (Provider.of<LocalUser>(context, listen: false)
-                      .exists(widget.wallpaper)) {
-                    await Provider.of<LocalUser>(context, listen: false)
-                        .deleteLiked(widget.wallpaper);
-                  } else {
-                    await Provider.of<LocalUser>(context, listen: false)
-                        .addWallpaperToLiked(widget.wallpaper);
-                  }
-                }
-                return !isLiked;
-              },
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 5,
+                  top: 4,
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 0.12,
+                      height: MediaQuery.of(context).size.width * 0.12,
+                      decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(500))),
+                ),
+                LikeButton(
+                  isLiked: localIsLiked,
+                  size: 60.0,
+                  circleColor:
+                      CircleColor(start: Colors.redAccent, end: Colors.red),
+                  bubblesColor: BubblesColor(
+                    dotPrimaryColor: Colors.redAccent,
+                    dotSecondaryColor: Colors.red,
+                  ),
+                  likeBuilder: (bool isLiked) {
+                    return Icon(
+                      Icons.favorite,
+                      size: 30.0,
+                      color: isLiked ? Colors.redAccent : Colors.white,
+                    );
+                  },
+                  onTap: (isLiked) async {
+                    if (localIsLiked != isLiked) {
+                      setState(() {
+                        localIsLiked = isLiked;
+                      });
+                      if (Provider.of<LocalUser>(context, listen: false)
+                          .exists(widget.wallpaper)) {
+                        await Provider.of<LocalUser>(context, listen: false)
+                            .deleteLiked(widget.wallpaper);
+                      } else {
+                        await Provider.of<LocalUser>(context, listen: false)
+                            .addWallpaperToLiked(widget.wallpaper);
+                      }
+                    } else {
+                      if (Provider.of<LocalUser>(context, listen: false)
+                          .exists(widget.wallpaper)) {
+                        await Provider.of<LocalUser>(context, listen: false)
+                            .deleteLiked(widget.wallpaper);
+                      } else {
+                        await Provider.of<LocalUser>(context, listen: false)
+                            .addWallpaperToLiked(widget.wallpaper);
+                      }
+                    }
+                    return !isLiked;
+                  },
+                )
+              ],
             ),
           ),
           Positioned(
@@ -97,7 +112,7 @@ class _ItemPageState extends State<ItemPage> {
               icon: Icon(
                 Icons.keyboard_arrow_left,
                 color: Colors.black,
-                size: 40.0,
+                size: 50.0,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -107,46 +122,60 @@ class _ItemPageState extends State<ItemPage> {
           Positioned(
             bottom: 30.0,
             left: MediaQuery.of(context).size.width / 3,
-            child: DropdownButton<int>(
-              icon: IconButton(
-                onPressed: () {
-                  getanddownload(dropdownvalue);
-                },
-                icon: Icon(
-                  Icons.file_download,
-                  color: Colors.white,
-                ),
+            child: Container(
+              padding: EdgeInsets.only(left: 20, right: 10),
+              decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.65),
+                  borderRadius: BorderRadius.circular(30)),
+              child: Row(
+                children: [
+                  DropdownButton<int>(
+                    alignment: Alignment.center,
+                    underline: Container(),
+                    iconSize: 0,
+                    dropdownColor: Colors.black,
+                    value: dropdownvalue,
+                    items: [
+                      DropdownMenuItem<int>(
+                        value: 80,
+                        child: Text(
+                          'High',
+                          style: TextStyle(color: Colors.white, fontSize: 16.0),
+                        ),
+                      ),
+                      DropdownMenuItem<int>(
+                        value: 60,
+                        child: Text(
+                          'Medium',
+                          style: TextStyle(color: Colors.white, fontSize: 16.0),
+                        ),
+                      ),
+                      DropdownMenuItem<int>(
+                        value: 30,
+                        child: Text(
+                          'Low',
+                          style: TextStyle(color: Colors.white, fontSize: 16.0),
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        dropdownvalue = value!;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      getanddownload(dropdownvalue);
+                    },
+                    icon: Icon(
+                      Icons.file_download,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                  ),
+                ],
               ),
-              dropdownColor: Colors.black,
-              value: dropdownvalue,
-              items: [
-                DropdownMenuItem<int>(
-                  value: 80,
-                  child: Text(
-                    'High',
-                    style: TextStyle(color: Colors.white, fontSize: 16.0),
-                  ),
-                ),
-                DropdownMenuItem<int>(
-                  value: 60,
-                  child: Text(
-                    'Medium',
-                    style: TextStyle(color: Colors.white, fontSize: 16.0),
-                  ),
-                ),
-                DropdownMenuItem<int>(
-                  value: 30,
-                  child: Text(
-                    'Low',
-                    style: TextStyle(color: Colors.white, fontSize: 16.0),
-                  ),
-                ),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  dropdownvalue = value!;
-                });
-              },
             ),
           ),
         ],

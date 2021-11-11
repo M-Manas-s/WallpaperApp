@@ -59,8 +59,8 @@ class _ExplorePageState extends State<ExplorePage> {
         onPressed: () {
           Navigator.pushNamed(context, LikedPage.id);
         },
-        backgroundColor: Colors.black,
-        child: Icon(Icons.favorite_border,color: Colors.white,size: 28.0,),
+        backgroundColor: Colors.white,
+        child: Icon(Icons.favorite,color: Colors.black,size: 28.0,),
         tooltip: 'Go to Liked Page',
       ),
       backgroundColor: Colors.black,
@@ -107,6 +107,8 @@ class _ExplorePageState extends State<ExplorePage> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             clearText();
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            currentFocus.unfocus();
                           },
                           icon: Icon(
                             Icons.clear,
@@ -126,6 +128,7 @@ class _ExplorePageState extends State<ExplorePage> {
             delegate: SliverChildListDelegate(
               [
                 Container(
+                  margin: EdgeInsets.only(bottom: size.height*0.01),
                   decoration: BoxDecoration(
                     border: Border.symmetric(
                         horizontal:
@@ -133,6 +136,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     // borderRadius: BorderRadius.circular(30.0),
                   ),
                   child: ImageSlideshow(
+                    height: size.height*0.4,
                     autoPlayInterval: 3000,
                     children: featured,
                     isLoop: true,
@@ -202,6 +206,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   title: 'Best out of all',
                   subtitle: 'Special ones for you',
                 ),
+                SizedBox(height: size.height*0.01,),
                 WallpaperGridBuilder(gridimagelist: widget.preLoadedImages),
               ],
             ),

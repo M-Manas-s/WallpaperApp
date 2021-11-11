@@ -68,9 +68,9 @@ class _LoadingPageState extends State<LoadingPage> {
 
   Future<dynamic> getImages() async {
     String urlStandard =
-        'https://api.unsplash.com/photos?per_page=12&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI';
+        'https://api.unsplash.com/photos?per_page=30&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI';
     String urlFeatured =
-        "https://api.unsplash.com/photos/random?per_page=12&count=4&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI";
+        "https://api.unsplash.com/photos/random?per_page=4&count=4&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI";
 
     List<WallPaper> localList = [];
     List<WallPaper> featured = [];

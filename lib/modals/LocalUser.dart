@@ -25,8 +25,6 @@ class LocalUser extends ChangeNotifier{
     if (exists(wallPaper) == false) {
       likedImages.add(wallPaper);
       addWallpaperToDB(wallPaper);
-      for (var x in likedImages)
-        print(x.regular + '\n');
     } else {
       print('exist');
     }

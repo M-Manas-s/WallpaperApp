@@ -18,7 +18,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<dynamic> getCollectionData(String typeOfCollection) async {
     var imagedata = await NetworkHelper().getWallpaper(
-        'https://api.unsplash.com/search/photos?query=$typeOfCollection&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI');
+        'https://api.unsplash.com/search/photos?per_page=9&query=$typeOfCollection&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI');
 
     setState(() {
       decodeddata = imagedata;
