@@ -30,7 +30,7 @@ class _ExplorePageState extends State<ExplorePage> {
   var decodeddata;
   int floaded = 0;
   bool loadingNewImages = false;
-  int loadedPages=1;
+  int loadedPages = 1;
 
   @override
   void initState() {
@@ -53,8 +53,9 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
   getImages() async {
+    loadedPages += 2;
     String urlStandard =
-        'https://api.unsplash.com/photos?per_page=30&page=${loadedPages++}&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI';
+        'https://api.unsplash.com/photos?per_page=30&page=${loadedPages}&client_id=Hl8nP0CKgfQztU1Y8Wb62YgydLAQSOQCnbnfZ2ueSHI';
 
     var imagedata1 = await NetworkHelper().getWallpaper(urlStandard);
 
@@ -74,8 +75,9 @@ class _ExplorePageState extends State<ExplorePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _scrollController.addListener(() async {
-      if ( _scrollController.position.pixels == _scrollController.position.maxScrollExtent && !loadingNewImages )
-      {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          !loadingNewImages) {
         print("Calling new data");
         setState(() {
           loadingNewImages = true;
@@ -108,7 +110,11 @@ class _ExplorePageState extends State<ExplorePage> {
           Navigator.pushNamed(context, LikedPage.id);
         },
         backgroundColor: Colors.white,
-        child: Icon(Icons.favorite,color: Colors.black,size: 28.0,),
+        child: Icon(
+          Icons.favorite,
+          color: Colors.black,
+          size: 28.0,
+        ),
         tooltip: 'Go to Liked Page',
       ),
       backgroundColor: Colors.black,
@@ -156,7 +162,8 @@ class _ExplorePageState extends State<ExplorePage> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             clearText();
-                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
                             currentFocus.unfocus();
                           },
                           icon: Icon(
@@ -177,7 +184,7 @@ class _ExplorePageState extends State<ExplorePage> {
             delegate: SliverChildListDelegate(
               [
                 Container(
-                  margin: EdgeInsets.only(bottom: size.height*0.01),
+                  margin: EdgeInsets.only(bottom: size.height * 0.01),
                   decoration: BoxDecoration(
                     border: Border.symmetric(
                         horizontal:
@@ -185,7 +192,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     // borderRadius: BorderRadius.circular(30.0),
                   ),
                   child: ImageSlideshow(
-                    height: size.height*0.4,
+                    height: size.height * 0.4,
                     autoPlayInterval: 3000,
                     children: featured,
                     isLoop: true,
@@ -237,7 +244,8 @@ class _ExplorePageState extends State<ExplorePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SearchPage(searchItem: 'Nature'),
+                              builder: (context) =>
+                                  SearchPage(searchItem: 'Nature'),
                             ),
                           );
                         },
@@ -255,8 +263,13 @@ class _ExplorePageState extends State<ExplorePage> {
                   title: 'Best out of all',
                   subtitle: 'Special ones for you',
                 ),
-                SizedBox(height: size.height*0.01,),
-                WallpaperGridBuilder(gridimagelist: widget.preLoadedImages, loading: loadingNewImages,),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                WallpaperGridBuilder(
+                  gridimagelist: widget.preLoadedImages,
+                  loading: loadingNewImages,
+                ),
               ],
             ),
           )
